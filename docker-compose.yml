@@ -1,0 +1,53 @@
+version: '3'
+services:
+  frontend:
+    build:
+      context: ./apps/frontend
+      dockerfile: scripts/Dockerfile
+      args:
+        - APP_MODE=${APP_MODE:-development}
+    restart: always
+    environment:
+      - APP_MODE=development
+    working_dir: /apps/frontend
+    volumes:
+      - ./apps/frontend/:/apps/frontend/
+      - frontend_node_modules:/apps/frontend/node_modules/
+    ports:
+      - 3000:3000
+
+  postgres:
+    image: postgres:13
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_MULTIPLE_DATABASES=keycloak
+    ports:
+      - "5435:5432"  
+    volumes:
+        - ./scripts/multiple-dbs.sh:/docker-entrypoint-initdb.d/multiple-dbs.sh
+        - pg-data:/var/lib/postgresql/data 
+
+  keycloak:
+      image: quay.io/keycloak/keycloak:17.0.1
+      command:
+        - start-dev
+      environment:
+        KC_DB: postgres
+        KC_DB_URL: jdbc:postgresql://postgres:5432/keycloak
+        KC_DB_USERNAME: postgres
+        KC_DB_PASSWORD: postgres
+        KEYCLOAK_ADMIN: admin
+        KEYCLOAK_ADMIN_PASSWORD: admin
+        # Uncomment the line below if you want to specify JDBC parameters. The parameter below is just an example, and it shouldn't be used in production without knowledge. It is highly recommended that you read the PostgreSQL JDBC driver documentation in order to use it.
+        #JDBC_PARAMS: "ssl=true"
+      ports:
+        - 8009:8080
+      volumes:
+        - ./keycloak/themes/custom:/opt/keycloak/themes/custom/
+      depends_on:
+        - postgres
+
+volumes:
+  frontend_node_modules:
+  pg-data:
