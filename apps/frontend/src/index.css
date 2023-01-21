@@ -11,3 +11,11 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.MuiSlider-root {
+  color: #20b2aa;
+}
+
+.MuiSlider-root:hover {
+  color: #2e8b57;
+}
