@@ -3,7 +3,7 @@ Building a very simple todo app to demonstrating
 
 1) one of the way to structure microservices based webapp
 2) Authentication/Authorization using Keycloak.
-3) Various react use cases like navigate, proxy setup, mui use, api calls, permission, handling, modal, redux management etc.
+3) Various Frontend use cases like State Management, API Calls, ProxySetup, Authorization based components, Navigations, Components like Modal, Tab etc.
 
 
 # TECH
