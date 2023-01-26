@@ -24,57 +24,47 @@ export default function MenuAppBar() {
   };
 
   return (
-    <>
-      <Box sx={{ flexGrow: 1 }}>
-        <AppBar position="static" color="primary" >
-          <Toolbar>
-            <Box
-              component="img"
-              sx={{
-                height: 20,
-              }}
-              alt="logo"
-              src={logo}
-            />
-            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              AskMe
-            </Typography>
-            <div>
-              <IconButton
-                size="large"
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                onClick={handleMenu}
-                color="inherit"
-              >
-                <AccountCircle />
-              </IconButton>
-              {!!keycloak.authenticated && (
+    <AppBar position="sticky" color="primary" >
+      <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
+        <Box sx={{ display: "flex" }}>
+          <Box component="img" sx={{ height: 30 }} alt="logo" src={logo} />
+          <Typography variant="h6"> AskMe </Typography>
+        </Box>
+        <Box>
+          <IconButton
+            size="large"
+            aria-label="account of current user"
+            aria-controls="menu-appbar"
+            aria-haspopup="true"
+            onClick={handleMenu}
+            color="inherit"
+          >
+            <AccountCircle />
+          </IconButton>
+          {!!keycloak.authenticated && (
 
-                <Menu
-                  id="menu-appbar"
-                  anchorEl={anchorEl}
-                  anchorOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                  }}
-                  keepMounted
-                  transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                  }}
-                  open={Boolean(anchorEl)}
-                  onClose={handleClose}
-                >
-                  <MenuItem >{keycloak.tokenParsed.preferred_username}</MenuItem>
-                  <MenuItem onClick={() => keycloak.logout()}>Logout</MenuItem>
-                </Menu>
-              )}
-            </div>
-          </Toolbar>
-        </AppBar>
-      </Box>
-    </>
+            <Menu
+              id="menu-appbar"
+              anchorEl={anchorEl}
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              open={Boolean(anchorEl)}
+              onClose={handleClose}
+            >
+              <MenuItem >{keycloak.tokenParsed.preferred_username}</MenuItem>
+              <MenuItem onClick={() => keycloak.logout()}>Logout</MenuItem>
+            </Menu>
+          )}
+        </Box>
+      </Toolbar>
+    </AppBar>
+
   );
 }

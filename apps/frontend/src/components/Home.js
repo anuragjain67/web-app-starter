@@ -1,39 +1,47 @@
 import * as React from 'react';
-import Card from '@mui/material/Card';
-import Box from '@mui/material/Box';
-
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-
 import { useNavigate } from 'react-router-dom';
+
 import { default as settings } from '../config';
-import AppHeader from './AppHeader';
+import TaskIcon from '@mui/icons-material/Task';
+import { Stack, Card, CardActions, CardMedia, Button } from '@mui/material';
 
 export default function Home() {
-	const apps = [{name: "TODO", url: settings.PAGE_URLS.Todos}];
-	const navigate = useNavigate();
+  const apps = [
+    {
+      name: "TODO", url: settings.PAGE_URLS.Todos, icon: TaskIcon,
+      image: "https://images.unsplash.com/photo-1586281380117-5a60ae2050cc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
+    },
+    {
+      name: "Attendance", url: null, icon: TaskIcon,
+      image: "https://images.unsplash.com/photo-1602827115209-0f49346b36b2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80"
+    },
+    {
+      name: "Money", url: null, icon: TaskIcon,
+      image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1715&q=80"
+    }
+  ];
+  const navigate = useNavigate();
 
-	const handleOpen = (app) => {
-		navigate(app.url);
-	};
+  const handleOpen = (app) => {
+    navigate(app.url);
+  };
 
-	return (
-		<>
-		<Box sx={{ display: 'flex', flexDirection: 'row' }}>
-			{apps.map((app, ind) => (
-				<Card sx={{ width: 200, p: 2, m: 2 }} key={ind}>
-					<CardContent>
-						<Typography variant="h3" color="text.secondary">
-							{app.name}
-						</Typography>
-					</CardContent>
-					<CardActions sx={{display: "flex"}}>
-						<Button onClick={() => handleOpen(app)}>Open</Button>
-					</CardActions>
-				</Card>
-			))}
-		</Box></>
-	)
+  return (
+    <Stack direction="row">
+      {
+        apps.map((app, ind) => (
+          <Card sx={{ width: 200, m: 2 }} key={ind}>
+            <CardMedia
+              sx={{ height: 140 }}
+              image={app.image}
+              title="green iguana"
+            />
+            <CardActions sx={{ display: "flex", justifyContent: 'center' }}>
+              <Button onClick={() => handleOpen(app)}>{app.name} App</Button>
+            </CardActions>
+          </Card>
+        ))
+      }
+    </Stack>
+  )
 }
