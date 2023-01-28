@@ -1,21 +1,23 @@
-import React from 'react';
-import { ReactKeycloakProvider } from "@react-keycloak/web";
+import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { Provider } from "react-redux";
+import { ReactKeycloakProvider } from "@react-keycloak/web";
 
-import { default as settings } from './config';
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+
+import store from "./store";
+import { default as settings } from "./config";
 import keycloak from "./Keycloak";
-import AppHeader from './components/AppHeader';
-import NavBar from './components/NavBar';
-import Home from './components/Home';
-import Todo from './components/todo/Todo';
 
+import AppHeader from "./components/AppHeader";
+import NavBar from "./components/NavBar";
+import Home from "./components/Home";
+import Todo from "./components/todo/Todo";
 
 // If using App2
-import Home2 from './components/other/Home2';
-import Login from './components/other/Login';
-import ProtectedRoute from './ProtectedRoute';
-
+import Home2 from "./components/other/Home2";
+import Login from "./components/other/Login";
+import ProtectedRoute from "./ProtectedRoute";
 
 const theme = createTheme({
   components: {
@@ -31,33 +33,36 @@ function App1() {
   // Login required approach
   return (
     <div>
-      <ReactKeycloakProvider authClient={keycloak} initOptions={{
-        onLoad: 'login-required'
-      }}>
-        <React.StrictMode>
-          <ThemeProvider theme={theme}>
-            <AppHeader />
-            <BrowserRouter>
-              <Routes>
-                <Route
-                  key="home"
-                  path={settings.PAGE_URLS.Home}
-                  element={
-                    <Home />
-                  }
-                />
-                <Route key="header" element={<NavBar title="Todo"/>}>
+      <Provider store={store}>
+        <ReactKeycloakProvider
+          authClient={keycloak}
+          initOptions={{
+            onLoad: "login-required",
+          }}
+        >
+          <React.StrictMode>
+            <ThemeProvider theme={theme}>
+              <AppHeader />
+              <BrowserRouter>
+                <Routes>
                   <Route
-                    key="todo"
-                    path={settings.PAGE_URLS.Todos}
-                    element={<Todo tab={0} />}
+                    key="home"
+                    path={settings.PAGE_URLS.Home}
+                    element={<Home />}
                   />
-                </Route>
-              </Routes>
-            </BrowserRouter>
-          </ThemeProvider>
-        </React.StrictMode>
-      </ReactKeycloakProvider>
+                  <Route key="header" element={<NavBar title="Todo" />}>
+                    <Route
+                      key="todo"
+                      path={settings.PAGE_URLS.Todos}
+                      element={<Todo tab={0} />}
+                    />
+                  </Route>
+                </Routes>
+              </BrowserRouter>
+            </ThemeProvider>
+          </React.StrictMode>
+        </ReactKeycloakProvider>
+      </Provider>
     </div>
   );
 }
@@ -74,7 +79,7 @@ function App2() {
               <Route
                 path="/"
                 element={
-                  <ProtectedRoute >
+                  <ProtectedRoute>
                     <Home2 />
                   </ProtectedRoute>
                 }

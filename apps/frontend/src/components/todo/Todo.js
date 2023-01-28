@@ -1,5 +1,6 @@
-import { Stack } from "@mui/material";
 import { useState } from "react";
+import { Stack } from "@mui/material";
+
 import TodoList from "./TodoList";
 import TodoNav from "./TodoNav";
 
@@ -8,8 +9,8 @@ export default function Todo() {
 
   return (
     <Stack direction="row">
-      <TodoNav todoType={todoType} setTodoType={setTodoType}/>
-      <TodoList todoType={todoType}/>
+      <TodoNav todoType={todoType} setTodoType={setTodoType} />
+      <TodoList todoType={todoType} />
     </Stack>
   );
 }

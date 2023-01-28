@@ -1,19 +1,21 @@
-import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
+import * as React from "react";
 import { useKeycloak } from "@react-keycloak/web";
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
-import AccountCircle from '@mui/icons-material/AccountCircle';
-import MenuItem from '@mui/material/MenuItem';
-import Menu from '@mui/material/Menu';
-import logo from '../assets/images/logo.png';
+
+import {
+  AppBar,
+  Box,
+  Toolbar,
+  Typography,
+  IconButton,
+  MenuItem,
+  Menu,
+} from "@mui/material";
+import AccountCircle from "@mui/icons-material/AccountCircle";
+import logo from "../assets/images/logo.png";
 
 export default function MenuAppBar() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const { keycloak } = useKeycloak();
-
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -24,7 +26,7 @@ export default function MenuAppBar() {
   };
 
   return (
-    <AppBar position="sticky" color="primary" >
+    <AppBar position="sticky" color="primary">
       <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
         <Box sx={{ display: "flex" }}>
           <Box component="img" sx={{ height: 30 }} alt="logo" src={logo} />
@@ -42,29 +44,27 @@ export default function MenuAppBar() {
             <AccountCircle />
           </IconButton>
           {!!keycloak.authenticated && (
-
             <Menu
               id="menu-appbar"
               anchorEl={anchorEl}
               anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
+                vertical: "top",
+                horizontal: "right",
               }}
               keepMounted
               transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
+                vertical: "top",
+                horizontal: "right",
               }}
               open={Boolean(anchorEl)}
               onClose={handleClose}
             >
-              <MenuItem >{keycloak.tokenParsed.preferred_username}</MenuItem>
+              <MenuItem>{keycloak.tokenParsed.preferred_username}</MenuItem>
               <MenuItem onClick={() => keycloak.logout()}>Logout</MenuItem>
             </Menu>
           )}
         </Box>
       </Toolbar>
     </AppBar>
-
   );
 }
