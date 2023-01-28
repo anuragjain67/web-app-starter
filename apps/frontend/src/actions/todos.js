@@ -1,6 +1,5 @@
 export const SET_TODOS = 'set_todos';
-export const SET_CURRENT_TODO = 'set_current_todo';
-
+export const ADD_TODO = 'add_todo';
 
 export const setTodos = (todos) => {
   return {
@@ -9,9 +8,10 @@ export const setTodos = (todos) => {
   }
 }
 
-export const setCurrentTodo = (todo) => {
+export const addTodos = (todo) => {
   return {
-      type: SET_CURRENT_TODO,
+      type: ADD_TODO,
       data: todo
   }
 }
+

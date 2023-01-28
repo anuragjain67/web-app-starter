@@ -6,6 +6,9 @@ export default function todos(state = settings.INITIAL_STATES.todos, action) {
     case actions.SET_TODOS:
       return { ...state, todos: action.data };
 
+    case actions.ADD_TODO:
+      return { ...state, todos: [action.data, ...state.todos] };
+
     default:
       return state;
   }

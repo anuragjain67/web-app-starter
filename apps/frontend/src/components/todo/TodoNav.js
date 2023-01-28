@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   Box,
@@ -13,11 +13,25 @@ import {
 import { Create, Group, Home } from "@mui/icons-material";
 
 import { default as settings } from "../../config";
+import { CreateEditTodo } from "./CreateEditTodo";
+import { useDispatch } from "react-redux";
+import { addTodos } from "../../actions";
 
 export default function TodoNav(props) {
   const { todoType, setTodoType } = props;
+  const [createModalOpen, setCreateModalOpen] = useState(false);
   const todoId = useParams()?.id;
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const handleCreate = (data) => {
+    dispatch(addTodos(Date.now()));
+    setCreateModalOpen(false);
+  };
+
+  const handleCreateModalClose = () => {
+    setCreateModalOpen(false);
+  };
 
   useEffect(() => {
     if (todoId !== undefined) {
@@ -38,6 +52,7 @@ export default function TodoNav(props) {
           sx={{ mb: 2 }}
           size="large"
           startIcon={<Create />}
+          onClick={() => setCreateModalOpen(true)}
         >
           Create
         </Button>
@@ -68,6 +83,11 @@ export default function TodoNav(props) {
           </ListItem>
         </List>
       </Paper>
+      <CreateEditTodo
+        open={createModalOpen}
+        handleSubmit={handleCreate}
+        handleClose={handleCreateModalClose}
+      />
     </Box>
   );
 }

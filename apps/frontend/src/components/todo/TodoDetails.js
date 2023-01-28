@@ -11,7 +11,7 @@ export default function TodoDetails() {
   return (
     <Box flex={5} ml={2}>
       <Paper >
-        <Box sx={{pl: 1}}>
+        <Box sx={{pl: 1, pt: 1, pb: 1}}>
           <IconButton onClick={() => navigate(settings.PAGE_URLS.Todos)}>
             <ArrowBack/>
           </IconButton>
