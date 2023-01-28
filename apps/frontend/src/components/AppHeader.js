@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useNavigate } from "react-router-dom";
 import { useKeycloak } from "@react-keycloak/web";
 
 import {
@@ -9,13 +10,16 @@ import {
   IconButton,
   MenuItem,
   Menu,
+  Button,
 } from "@mui/material";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import logo from "../assets/images/logo.png";
+import { default as settings } from "../config";
 
 export default function MenuAppBar() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const { keycloak } = useKeycloak();
+  const navigate = useNavigate();
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -29,9 +33,23 @@ export default function MenuAppBar() {
     <AppBar position="sticky" color="primary">
       <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
         <Box sx={{ display: "flex" }}>
-          <Box component="img" sx={{ height: 30 }} alt="logo" src={logo} />
-          <Typography variant="h6"> AskMe </Typography>
+          <Button
+            varient="text"
+            onClick={() => navigate(settings.PAGE_URLS.Home)}
+            color="inherit"
+            startIcon={
+              <Box component="img" sx={{ height: 30 }} alt="logo" src={logo} />
+            }
+            sx={{
+              "&:hover": {
+                background: "none",
+              },
+            }}
+          >
+            <Typography variant="h6">AskMe</Typography>
+          </Button>
         </Box>
+
         <Box>
           <IconButton
             size="large"

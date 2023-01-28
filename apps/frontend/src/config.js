@@ -1,6 +1,7 @@
 export const PAGE_URLS = {
   Home: "/",
   Todos: "/todos",
+  TodoDetails: "/todos/:id",
 };
 
 export const KEYCLOAK = {

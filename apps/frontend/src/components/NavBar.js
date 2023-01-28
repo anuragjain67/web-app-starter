@@ -7,6 +7,7 @@ import GrainIcon from "@mui/icons-material/Grain";
 
 import { default as settings } from "../config";
 
+// Not using but helpful
 export default function NavBar(props) {
   const title = props.title;
   return (

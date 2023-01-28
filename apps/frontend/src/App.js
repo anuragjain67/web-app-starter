@@ -10,7 +10,6 @@ import { default as settings } from "./config";
 import keycloak from "./Keycloak";
 
 import AppHeader from "./components/AppHeader";
-import NavBar from "./components/NavBar";
 import Home from "./components/Home";
 import Todo from "./components/todo/Todo";
 
@@ -42,18 +41,23 @@ function App1() {
         >
           <React.StrictMode>
             <ThemeProvider theme={theme}>
-              <AppHeader />
               <BrowserRouter>
+                <AppHeader />
                 <Routes>
                   <Route
                     key="home"
                     path={settings.PAGE_URLS.Home}
                     element={<Home />}
                   />
-                  <Route key="header" element={<NavBar title="Todo" />}>
+                  <Route key="header">
                     <Route
                       key="todo"
                       path={settings.PAGE_URLS.Todos}
+                      element={<Todo tab={0} />}
+                    />
+                    <Route
+                      key="tododetail"
+                      path={settings.PAGE_URLS.TodoDetails}
                       element={<Todo tab={0} />}
                     />
                   </Route>
