@@ -25,7 +25,7 @@ export default function TodoDetails() {
             p: 2
           }}
         >
-          <Typography>List Item {todoId}</Typography>
+          <Typography>Todo Id {todoId}</Typography>
         </Stack>
       </Paper>
     </Box>

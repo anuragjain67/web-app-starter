@@ -14,20 +14,12 @@ import { Create, Group, Home } from "@mui/icons-material";
 
 import { default as settings } from "../../config";
 import { CreateEditTodo } from "./CreateEditTodo";
-import { useDispatch } from "react-redux";
-import { addTodos } from "../../actions";
 
 export default function TodoNav(props) {
   const { todoType, setTodoType } = props;
   const [createModalOpen, setCreateModalOpen] = useState(false);
   const todoId = useParams()?.id;
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-
-  const handleCreate = (data) => {
-    dispatch(addTodos(Date.now()));
-    setCreateModalOpen(false);
-  };
 
   const handleCreateModalClose = () => {
     setCreateModalOpen(false);
@@ -66,7 +58,7 @@ export default function TodoNav(props) {
               <ListItemIcon>
                 <Home />
               </ListItemIcon>
-              <ListItemText primary="My Todos" />
+              <ListItemText primary="My" />
             </ListItemButton>
           </ListItem>
           <ListItem
@@ -85,7 +77,6 @@ export default function TodoNav(props) {
       </Paper>
       <CreateEditTodo
         open={createModalOpen}
-        handleSubmit={handleCreate}
         handleClose={handleCreateModalClose}
       />
     </Box>

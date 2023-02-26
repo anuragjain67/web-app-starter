@@ -12,13 +12,18 @@ import {
   Checkbox,
   IconButton,
   ListItemSecondaryAction,
+  Menu,
+  MenuItem,
 } from "@mui/material";
-import CommentIcon from "@mui/icons-material/Comment";
+import { MoreVert } from "@mui/icons-material";
+
+import TodoFilter from "./TodoFilter";
+import { CreateEditTodo } from "./CreateEditTodo";
 
 import { default as settings } from "../../config";
-import { setTodos } from "../../actions";
-import { fetchTodos } from "../../resources";
-import TodoFilter from "./TodoFilter";
+import { fetchTodos, deleteTodo } from "../../resources";
+import { setTodos, deleteTodo as deleteTodoAction } from "../../actions";
+
 
 function TodoList(props) {
   const { todoType } = props;
@@ -26,15 +31,34 @@ function TodoList(props) {
   const navigate = useNavigate();
 
   const [filter, setFilter] = useState(0);
-
   const todos = useSelector((state) => state.todos.todos);
-
   useEffect(() => {
     dispatch(setTodos(fetchTodos(todoType, filter)));
   }, [todoType, filter]);
 
-  const [checked, setChecked] = useState([0]);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [currentTodoObj, setCurrentTodoObj] = useState(null);
+  const openMenu = Boolean(anchorEl);
+  const handleMenuClick = (event, value) => {
+    setCurrentTodoObj(value);
+    setAnchorEl(event.currentTarget);
+  };
+  const handleMenuClose = () => {
+    setCurrentTodoObj(null);
+    setAnchorEl(null);
+  };
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const handleEditModalClose = () => {
+    setEditModalOpen(false);
+    handleMenuClose();
+  };
 
+  const handleDeleteTodo = () => {
+    dispatch(deleteTodoAction(deleteTodo(currentTodoObj)));
+    handleMenuClose();
+  };
+
+  const [checked, setChecked] = useState([0]);
   const handleToggle = (value) => {
     const currentIndex = checked.indexOf(value);
     const newChecked = [...checked];
@@ -65,22 +89,34 @@ function TodoList(props) {
         }}
       >
         {todos.map((value, ind) => {
-          const labelId = `checkbox-list-label-${value}`;
+          const labelId = `checkbox-list-label-${value.id}`;
           return (
-            <ListItem key={value} dense>
-              <ListItemButton onClick={() => handleTodoClick(value)}>
+            <ListItem
+              key={value.id}
+              dense
+              sx={{
+                "& .MuiListItemButton-root:hover": {
+                  bgcolor: "transparent",
+                },
+              }}
+            >
+              <ListItemButton>
                 <ListItemIcon>
                   <Checkbox
                     edge="start"
-                    checked={checked.indexOf(value) !== -1}
-                    onChange={() => handleToggle(value)}
-                    disableRipple
+                    checked={checked.indexOf(value.id) !== -1}
+                    onChange={() => handleToggle(value.id)}
                   />
                 </ListItemIcon>
-                <ListItemText id={labelId} primary={`Line item ${value}`} />
+                <ListItemText
+                  id={labelId}
+                  primary={`${value.title} ${value.id}`}
+                  secondary={value.description}
+                  onClick={() => handleTodoClick(value.id)}
+                />
                 <ListItemSecondaryAction>
-                  <IconButton edge="end" aria-label="comments">
-                    <CommentIcon />
+                  <IconButton edge="end" onClick={(event) => handleMenuClick(event, value)}>
+                    <MoreVert />
                   </IconButton>
                 </ListItemSecondaryAction>
               </ListItemButton>
@@ -88,8 +124,28 @@ function TodoList(props) {
           );
         })}
       </Stack>
+      <MoreMenu
+        open={openMenu}
+        handleClose={handleMenuClose}
+        handleEdit={() => {
+          setEditModalOpen(true);
+        }}
+        handleDelete={handleDeleteTodo}
+        anchorEl={anchorEl}
+      />
+      <CreateEditTodo open={editModalOpen} handleClose={handleEditModalClose} initialValues={currentTodoObj}/>
     </Box>
   );
 }
 
+const MoreMenu = (props) => {
+  const { open, handleClose, handleEdit, handleDelete, anchorEl } = props;
+
+  return (
+    <Menu id="basic-menu" anchorEl={anchorEl} open={open} onClose={handleClose}>
+      <MenuItem onClick={handleEdit}>Edit</MenuItem>
+      <MenuItem onClick={handleDelete}>Delete</MenuItem>
+    </Menu>
+  );
+};
 export default TodoList;
